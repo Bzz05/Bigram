@@ -1,76 +1,52 @@
-In backpropagation, we use the chain rule to calculate derivatives as we move backward through layers. The chain rule states:
+in backpropagation, we use the chain rule to calculate derivatives as we move backward through layers. The chain rule states:
 
-\[
-\frac{dx}{dy} = \frac{dx}{dz} \cdot \frac{dz}{dy}
-\]
+![Chain Rule](https://latex.codecogs.com/png.latex?%5Cfrac%7Bdx%7D%7Bdy%7D%20%3D%20%5Cfrac%7Bdx%7D%7Bdz%7D%20%5Ccdot%20%5Cfrac%7Bdz%7D%7Bdy%7D)
 
-During back propagation, global derivative * local derivative:
+during backpropagation, global derivative * local derivative:
 
-\[
-\frac{da}{db} = \frac{da}{dz} \cdot \frac{dz}{dc} \cdot \frac{dc}{dt} \cdot \frac{dt}{db}
-\]
+![Global Derivative](https://latex.codecogs.com/png.latex?%5Cfrac%7Bda%7D%7Bdb%7D%20%3D%20%5Cfrac%7Bda%7D%7Bdz%7D%20%5Ccdot%20%5Cfrac%7Bdz%7D%7Bdc%7D%20%5Ccdot%20%5Cfrac%7Bdc%7D%7Bdt%7D%20%5Ccdot%20%5Cfrac%7Bdt%7D%7Bdb%7D)
 
-with \(\frac{da}{dz}\), being the node before the output, and it iterates back to layers before it.
+with ![\frac{da}{dz}](https://latex.codecogs.com/png.latex?%5Cfrac%7Bda%7D%7Bdz%7D) being the node before the output, and it iterates back to layers before it.
 
-## Gradient Flow for Basic Operations
 
-for addition, you simply pass back the gradient from \(i\)th layer to \(i-1\)th layer, since they are linear operations. this means any change in \(d\) is equivalent to the change in both \(a\) and \(b\). Take this for example:
+for addition, you simply pass back the gradient from the \(i\)th layer to the \(i-1\)th layer, since they are linear operations. this means any change in \(d\) is equivalent to the change in both \(a\) and \(b\). take this for example:
 
-\[
-d = a + b
-\]
+![d = a + b](https://latex.codecogs.com/png.latex?d%20%3D%20a%20%2B%20b)
 
-Both \(\frac{\partial d}{\partial a}\) and \(\frac{\partial d}{\partial b}\) are simply:
+both ![\frac{\partial d}{\partial a}](https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20a%7D) and ![\frac{\partial d}{\partial b}](https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20b%7D) are simply:
 
-\[
-\frac{\partial d}{\partial a} = 1 \quad \text{and} \quad \frac{\partial d}{\partial b} = 1
-\]
+![Derivatives](https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20a%7D%20%3D%201%20%5Cquad%20%5Ctext%7Band%7D%20%5Cquad%20%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20b%7D%20%3D%201)
 
 so:
 
-\[
-\text{grad}_a = \text{grad}_d \cdot 1 = \text{grad}_d
-\]
-\[\text{grad}_b = \text{grad}_d \cdot 1 = \text{grad}_d\]
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_a%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%201%20%3D%20%5Ctext%7Bgrad%7D_d)
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_b%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%201%20%3D%20%5Ctext%7Bgrad%7D_d)
 
+for subtraction, make the gradient with respect to the term with a minus sign negative:
 
-for subtraction, you make the gradient with respect to the term with a minus sign negative:
-
-\[
-d = a - b
-\]
+![d = a - b](https://latex.codecogs.com/png.latex?d%20%3D%20a%20-%20b)
 
 so:
 
-\[
-\frac{\partial d}{\partial a} = 1 \quad \text{and} \quad \frac{\partial d}{\partial b} = -1
-\]
+![Derivatives](https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20a%7D%20%3D%201%20%5Cquad%20%5Ctext%7Band%7D%20%5Cquad%20%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20b%7D%20%3D%20-1)
 
 which gives:
 
-\[
-\text{grad}_a = \text{grad}_d \cdot 1 = \text{grad}_d
-\]
-\[\text{grad}_b = \text{grad}_d \cdot (-1) = -\text{grad}_d\]
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_a%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%201%20%3D%20%5Ctext%7Bgrad%7D_d)
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_b%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%20(-1)%20%3D%20-%5Ctext%7Bgrad%7D_d)
 
 for multiplication:
 
-\[
-d = a \cdot b
-\]
+![d = a \cdot b](https://latex.codecogs.com/png.latex?d%20%3D%20a%20%5Ccdot%20b)
 
 we have:
 
-\[
-\frac{\partial d}{\partial a} = b \quad \text{and} \quad \frac{\partial d}{\partial b} = a
-\]
+![Derivatives](https://latex.codecogs.com/png.latex?%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20a%7D%20%3D%20b%20%5Cquad%20%5Ctext%7Band%7D%20%5Cquad%20%5Cfrac%7B%5Cpartial%20d%7D%7B%5Cpartial%20b%7D%20%3D%20a)
 
 so:
 
-\[
-\text{grad}_a = \text{grad}_d \cdot b
-\]
-\[\text{grad}_b = \text{grad}_d \cdot a\]
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_a%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%20b)
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_b%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%20a)
 
 ---
 
