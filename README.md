@@ -45,8 +45,14 @@ we have:
 
 so:
 
-![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_a%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%20b)
+![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_a%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%20b) 
 ![Gradients](https://latex.codecogs.com/png.latex?%5Ctext%7Bgrad%7D_b%20%3D%20%5Ctext%7Bgrad%7D_d%20%5Ccdot%20a)
+
+---
+## important
+and at last, another concept called broadcasting. more clearly see the code where we try to make the code more efficient by making P = N.float() then P /= P.sum(1, keepdims = True) to normalize it. it could be seen that there is 27 x 27 and 27 x 1 division. 
+
+normally, we couldn't do this. so what pytorch do is kind of remake 27 x 1 to 27 x 27 by adding more columns (i like to think that it as being stretched). also, pytorch did it from right to left, and they could be adjusted by torch only if the element wise is of the same size, one of them is 1, or one of them doesnt exist. and we need to be becareful with 27 x 27 / 27 x 1 and 27 x 27 / 1 x 27. this could possibly lead to bug in our case. if we do keepdims = True, the shape would be 27 x 1 which is a 2D tensor and if we don't, it will just be 27, a 1D tensor. so 27 x 27 / 27, and with broadcasting rule, pytorch will change it to 1 x 27 and the equation becomes 27 x 27 / 1 x 27, which then it stretches (it will make it 27 x 27) in which we are actually normalizing the columns, instead of the rows. you can try running P[0].sum() without using keepdims = True where it should've return the sum as 1.0(because of probability), but it actually doesn't.
 
 ---
 
