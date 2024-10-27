@@ -51,3 +51,8 @@ so:
 ---
 
 this is expected to not make a complete word, because bigram is kind of a weak model.
+
+
+## Credits
+
+This work is made with the teachings and materials from Andrej Karpathy.
